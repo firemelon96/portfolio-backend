@@ -1,12 +1,11 @@
 const express = require("express");
 require("dotenv").config();
+const dbConfig = require("./config/dbConfig");
+const mongoose = require("mongoose");
+const portfolioRoutes = require("./routes/portfolioRoutes");
 const cors = require("cors");
 
 const app = express();
-const dbConfig = require("./config/dbConfig");
-
-const portfolioRoutes = require("./routes/portfolioRoutes");
-const mongoose = require("mongoose");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
