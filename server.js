@@ -20,6 +20,11 @@ app.use(
 
 app.use("/api/portfolio", portfolioRoutes);
 
+//Routes
+app.get("/", (req, res) => {
+  res.send("MERN Homepage");
+});
+
 const PORT = process.env.PORT || 5000;
 // const path = require("path");
 
