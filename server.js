@@ -14,7 +14,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://my-portfolio-avkf.onrender.com",
-      "https://portfolio-frontend-l03ott1nu-firemelon96.vercel.app/",
+      "https://portfolio-frontend-rouge.vercel.app",
     ],
   })
 );
