@@ -11,7 +11,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://my-portfolio-avkf.onrender.com"],
+    origin: [
+      "http://localhost:3000",
+      "https://my-portfolio-avkf.onrender.com",
+      "https://portfolio-frontend-l03ott1nu-firemelon96.vercel.app/",
+    ],
   })
 );
 
