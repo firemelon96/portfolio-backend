@@ -11,8 +11,8 @@ const getPortfolioData = async (req, res) => {
   try {
     const intros = await Intro.find();
     const abouts = await About.find();
-    const experiences = await Experience.find();
-    const projects = await Project.find();
+    const experiences = await Experience.find().sort("-period");
+    const projects = await Project.find().sort("-createdAt");
     const contacts = await Contact.find();
 
     res.status(200).send({
