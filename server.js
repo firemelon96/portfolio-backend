@@ -4,6 +4,7 @@ const dbConfig = require("./config/dbConfig");
 const mongoose = require("mongoose");
 const portfolioRoutes = require("./routes/portfolioRoutes");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
@@ -16,8 +17,11 @@ app.use(
       "https://my-portfolio-avkf.onrender.com",
       "https://portfolio-frontend-rouge.vercel.app",
     ],
+    credentials: true,
   })
 );
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/portfolio", portfolioRoutes);
 

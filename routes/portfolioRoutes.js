@@ -12,6 +12,7 @@ const {
   updateContact,
   adminLogin,
 } = require("../controller/portfolioController");
+const { upload } = require("../utils/fileUpload");
 
 //get all portfolio data
 router.get("/get-portfolio-data", getPortfolioData);
@@ -32,10 +33,10 @@ router.post("/update-experience", updateExperience);
 router.post("/delete-experience", deleteExperience);
 
 //add project
-router.post("/add-project", addProject);
+router.post("/add-project", upload.single("image"), addProject);
 
 //update-project
-router.post("/update-project", updateProject);
+router.post("/update-project", upload.single("image"), updateProject);
 
 //delete project
 router.post("/delete-project", deleteProject);

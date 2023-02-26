@@ -6,6 +6,8 @@ const {
   Contact,
 } = require("../models/portfolioModel");
 const User = require("../models/userModel");
+const { fileSizeFormatter } = require("../utils/fileUpload");
+const cloudinary = require("cloudinary").v2;
 
 const getPortfolioData = async (req, res) => {
   try {
@@ -105,6 +107,7 @@ const updateExperience = async (req, res) => {
   }
 };
 
+//delete experience
 const deleteExperience = async (req, res) => {
   try {
     const experience = await Experience.findOneAndDelete({
@@ -120,10 +123,50 @@ const deleteExperience = async (req, res) => {
   }
 };
 
+//Create a project
 const addProject = async (req, res) => {
+  const { title, description, link, technologies } = req.body;
+
+  //validation
+  // if (!title || !description || !link || !technologies) {
+  //   res.status(400).send({
+  //     success: false,
+  //     message: "Please fill all fields",
+  //   });
+  // }
+
+  //handling the image upload
+  let fileData = {};
+  //if not empty
+  if (req.file) {
+    let uploadedFile;
+    try {
+      uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+        folder: "portfolioImg",
+        resource_type: "image",
+      });
+    } catch (error) {
+      res.status(500).send({
+        message: error,
+      });
+    }
+
+    fileData = {
+      fileName: req.file.originalname,
+      filePath: uploadedFile.secure_url,
+      fileType: req.file.mimetype,
+      fileSize: fileSizeFormatter(req.file.size, 2),
+    };
+  }
+
   try {
-    const project = Project(req.body);
-    await project.save();
+    const project = await Project.create({
+      title,
+      description,
+      link,
+      technologies: technologies.split(",") || [],
+      image: fileData,
+    });
     res.status(200).send({
       data: project,
       success: true,
@@ -135,13 +178,47 @@ const addProject = async (req, res) => {
   }
 };
 
+//update project
 const updateProject = async (req, res) => {
+  const { title, description, link, technologies } = req.body;
+  // console.log(image);
+  console.log(req.file);
+  //handling file upload
+  let fileData = {};
+  if (req.file) {
+    //save to cloudinary
+    let uploadedFile;
+    try {
+      uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+        folder: "portfolioImg",
+        resource_type: "image",
+      });
+    } catch (error) {
+      res.status(500).send({
+        message: error,
+      });
+    }
+
+    fileData = {
+      fileName: req.file.originalname,
+      filePath: uploadedFile.secure_url,
+      fileType: req.file.mimetype,
+      fileSize: fileSizeFormatter(req.file.size, 2),
+    };
+  }
+
   try {
     const project = await Project.findOneAndUpdate(
       {
         _id: req.body._id,
       },
-      req.body,
+      {
+        title,
+        description,
+        link,
+        technologies: technologies.split(",") || [],
+        image: Object.keys(fileData).length === 0 ? Project?.image : fileData,
+      },
       {
         new: true,
       }
@@ -156,6 +233,7 @@ const updateProject = async (req, res) => {
   }
 };
 
+//delete project
 const deleteProject = async (req, res) => {
   try {
     const project = await Project.findOneAndDelete({
