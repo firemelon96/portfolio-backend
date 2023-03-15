@@ -15,7 +15,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://portfolio-frontend-rouge.vercel.app",
-      "https://almujahid-jamion-rouge.vercel.app",
+      "https://almujahid-jamion.vercel.app",
     ],
     credentials: true,
   })
