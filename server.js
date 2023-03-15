@@ -14,8 +14,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://my-portfolio-avkf.onrender.com",
       "https://portfolio-frontend-rouge.vercel.app",
+      "https://almujahid-jamion-rouge.vercel.app",
     ],
     credentials: true,
   })
